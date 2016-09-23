@@ -7,7 +7,7 @@ void free(char * ptr);
 
 //*****Functions*****//
 char * malloc(int size) {
-	
+	printf("Memory of size %d allocated\n",size);
 	return 0x0;
 }
 
