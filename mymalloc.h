@@ -1,6 +1,6 @@
 #define malloc(x) mymalloc(x, __FILE__, __LINE__)
 #define free(x) myfree(x, __FILE__, __LINE__)
-//it is wise to wipe afterwards
+
 //*****Prototypes*****//
 char * malloc(int size);
 void free(char * ptr);
