@@ -16,8 +16,11 @@ int main(int argc, char * argv[]) {
 	printf("%d\n",*a_int);
 
 	//print view of memory and tag list
-	printMem(10);
-	printTags(10);
+	printArraysAsPicture(10);
+	myfree(a_string);
+	myfree(a_int);
+	printf("---------\n");
+	printArraysAsPicture(10);
 
 	return 0;
 }
