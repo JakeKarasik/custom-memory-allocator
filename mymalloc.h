@@ -51,7 +51,7 @@ void myfree(void * ptr) {
 	for (i=0;i<size;i++) {
 		tag clean_tag = {0,0};
 		address_list[position+i] = clean_tag;
-	}
+	} 
 }
 
 void printMem(int max_print_index) {
