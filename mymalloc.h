@@ -3,8 +3,15 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#define MEM_SIZE 5000
+
+//******Structs******//
+typedef struct metadata_ {
+	int size;
+	int is_set;
+	struct metadata_ * prev, * next;
+} metadata;
 
 //*****Prototypes*****//
 void * mymalloc(size_t size);
 void myfree(void * ptr);
-int nextOpenSpot(size_t size);
