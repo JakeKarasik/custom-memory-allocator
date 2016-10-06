@@ -3,8 +3,22 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#define MEM_CAP 5000
+
+
+//****Structs*****//
+typedef struct metadata_{
+	int is_set;
+	int size;
+	struct metadata_ * prev, * next;
+	
+}metadata;
+
+typedef struct node_ {
+	int test;
+	char * word;
+}node;
 
 //*****Prototypes*****//
 void * mymalloc(size_t size);
 void myfree(void * ptr);
-int nextOpenSpot(size_t size);
