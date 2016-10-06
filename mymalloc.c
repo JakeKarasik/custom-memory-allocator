@@ -2,6 +2,9 @@
 //Nicholas Petriello
 #include "mymalloc.h"
 
+//*((int*)ptr) = 5006;
+//printf("%d", *ptr);
+
 //****Global Vars****//
 static char myblock[5000];
 int current_index = 0;
@@ -12,7 +15,7 @@ int nextOpenSpot(size_t size) {
 	int i;
 	for (i=current_index;i<5000;i++) {
 		if () {
-			
+
 		}
 	}
 }
