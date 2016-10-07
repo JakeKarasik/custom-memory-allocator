@@ -6,36 +6,38 @@
 //printf("%d", *ptr);
 
 //****Global Vars****//
-static char myblock[MEM_CAP];
-int remaining_space = MEM_CAP;
+static char myblock[MEM_CAP]; //Storage memory
+int remaining_space = MEM_CAP; //Bytes left to allocate
 int curr_index = 0;
 int head_used = 0;
-metadata * head = (metadata*)myblock;
+metadata * head = (metadata *)myblock;
 
 //*****Functions*****//
 void * mymalloc(size_t size){
 	
-	//printf("CURRENT INDEX %d\n", curr_index);
 	if(remaining_space < size + sizeof(metadata)){
 		
 		printf("Error: Not enough memory left to allocate.\n");
 		return NULL;
 		
-	}
-	
+	}	
+	curr_index = 0;
 	if (!head_used) {
+		
 		head->is_set = 0;
 		head->size = 0;
+		head->id = 0xdaedbeaf;
 		head->prev = NULL;
 		head->next = NULL;
 		remaining_space -= sizeof(metadata);
 		curr_index += sizeof(metadata);
 		head_used = 1;
+		
 	}
 	
 	metadata * curr = head;
 	
-	while(curr != NULL){
+	while(curr != NULL && curr_index < MEM_CAP){
 		
 		//valid block found
 		if((curr->is_set == 0 && curr->size >= size) || (curr->is_set == 0 && curr->size == 0)){
@@ -47,22 +49,23 @@ void * mymalloc(size_t size){
 			curr_index += size + sizeof(metadata);
 			new_block->is_set = 0;
 			new_block->size = 0;
+			new_block->id = 0xdaedbeaf;
 			new_block->prev = curr;
 			new_block->next = NULL;
 			curr->next = new_block;
 			curr->is_set = 1;
 			remaining_space -= sizeof(metadata) + size;
-			//printf("SPACE REM %d\n", remaining_space);
-			//curr_index += sizeof(metadata) + size;
-			//printf("CURRENT INDEX %d\n", curr_index);
-			printf("SUCCESSFUL MALLOC\n");
+			//printf("SUCCESSFUL MALLOC\n");
 			return curr + 1;
 			
 		}else{
 			
+			curr_index += sizeof(metadata) + curr->size;
 			curr = curr->next;
 			
+			
 		}
+		printf("ahhhh\n");
 		
 	}
 	printf("Error: Not enough continuous memory available.\n");
@@ -72,13 +75,31 @@ void * mymalloc(size_t size){
 
 void myfree(void * ptr){
 	
-	return;
+	metadata * to_free = (metadata *)(ptr) - 1;
+	if(to_free->id == 0xdaedbeaf && to_free->is_set == 1){
+		
+		if((char *)to_free == (char *)myblock){
+			
+			head_used = 0;
+			
+		}
+		to_free->is_set = 0;
+		remaining_space += to_free->size;
+	}else if(to_free->id == 0xdaedbeaf && to_free->is_set == 0){
+		
+		printf("Error: Pointer was already free'd\n");
+		
+	}else{
+		
+		printf("Error: Invalid free!\n");
+		
+	}
+	
 }
 
 int main(int argn, char* argv[]){
 	
-	printf("START\n");
-	
+/*	
 	char * test1 = mymalloc(sizeof(char)*6);
 	test1[5] = '\0';
 	test1[0] = 'a';
@@ -105,18 +126,35 @@ int main(int argn, char* argv[]){
 	testNode->word = mymalloc(3);
 	strcpy(testNode->word,"hi");
 	
-	
+
 	printf("%s\n", test1);
-	printf("%s\n", test2);
+	//printf("%s\n", test2);
 	//printf("%d\n", *int_ptr);
-	printf("%d,%s\n",testNode->test,testNode->word);
+	//printf("%d,%s\n",testNode->test,testNode->word);
+
 	int i;
-	for(i = 0; i < 200; i++){
+	for(i = 0; i < 30; i++){
 		
-		printf("%d[%c]\n", i,myblock[i]);
+		printf("%d[%d]\n", i,myblock[i]);
 		
 	}
-	
+	myfree(test1);
+
+	for(i = 0; i < 30; i++){
+		
+		printf("%d[%d]\n", i,myblock[i]);
+		
+	}
+	myfree(test1);
+	myfree(&i);
+*/
+	int j;
+	for(j = 0; j < 20; j++){
+		int * ptr = mymalloc(sizeof(int));
+		*ptr = j;
+		printf("%d\n",*ptr);
+		
+	}
 	return 0;
 	
 }

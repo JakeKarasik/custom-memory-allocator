@@ -8,15 +8,19 @@
 
 //****Structs*****//
 typedef struct metadata_{
+	
 	int is_set;
 	int size;
+	long id;
 	struct metadata_ * prev, * next;
 	
 }metadata;
 
 typedef struct node_ {
+	
 	int test;
 	char * word;
+	
 }node;
 
 //*****Prototypes*****//
