@@ -20,7 +20,11 @@ typedef struct node_ {
 	
 	int test;
 	char * word;
+<<<<<<< HEAD
 	
+=======
+	
+>>>>>>> master
 }node;
 
 //*****Prototypes*****//
