@@ -19,11 +19,7 @@ void * mymalloc(size_t size){
 		
 		printf("Error: Not enough memory left to allocate.\n");
 		return NULL;
-<<<<<<< HEAD
 		
-=======
-		
->>>>>>> master
 	}	
 	curr_index = 0;
 	if (!head_used) {
@@ -36,11 +32,7 @@ void * mymalloc(size_t size){
 		remaining_space -= sizeof(metadata);
 		curr_index += sizeof(metadata);
 		head_used = 1;
-<<<<<<< HEAD
 		
-=======
-		
->>>>>>> master
 	}
 	
 	metadata * curr = head;
@@ -71,17 +63,10 @@ void * mymalloc(size_t size){
 			curr_index += sizeof(metadata) + curr->size;
 			curr = curr->next;
 			
-<<<<<<< HEAD
 			
 		}
 		printf("ahhhh\n");
 		
-=======
-			
-		}
-		printf("ahhhh\n");
-		
->>>>>>> master
 	}
 	printf("Error: Not enough continuous memory available.\n");
 	return NULL;
@@ -99,7 +84,6 @@ void myfree(void * ptr){
 			
 		}
 		to_free->is_set = 0;
-<<<<<<< HEAD
 		remaining_space += to_free->size;
 	}else if(to_free->id == 0xdaedbeaf && to_free->is_set == 0){
 		
@@ -111,19 +95,6 @@ void myfree(void * ptr){
 		
 	}
 	
-=======
-		remaining_space += to_free->size;
-	}else if(to_free->id == 0xdaedbeaf && to_free->is_set == 0){
-		
-		printf("Error: Pointer was already free'd\n");
-		
-	}else{
-		
-		printf("Error: Invalid free!\n");
-		
-	}
-	
->>>>>>> master
 }
 
 int main(int argn, char* argv[]){
@@ -163,7 +134,6 @@ int main(int argn, char* argv[]){
 
 	int i;
 	for(i = 0; i < 30; i++){
-<<<<<<< HEAD
 		
 		printf("%d[%d]\n", i,myblock[i]);
 		
@@ -184,28 +154,6 @@ int main(int argn, char* argv[]){
 		*ptr = j;
 		printf("%d\n",*ptr);
 		
-=======
-		
-		printf("%d[%d]\n", i,myblock[i]);
-		
-	}
-	myfree(test1);
-
-	for(i = 0; i < 30; i++){
-		
-		printf("%d[%d]\n", i,myblock[i]);
-		
-	}
-	myfree(test1);
-	myfree(&i);
-*/
-	int j;
-	for(j = 0; j < 20; j++){
-		int * ptr = mymalloc(sizeof(int));
-		*ptr = j;
-		printf("%d\n",*ptr);
-		
->>>>>>> master
 	}
 	return 0;
 	
