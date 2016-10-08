@@ -3,14 +3,25 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#define MEM_SIZE 5000
+#define MEM_CAP 5000
 
-//******Structs******//
-typedef struct metadata_ {
-	int size;
+
+//****Structs*****//
+typedef struct metadata_{
+	
 	int is_set;
+	int size;
+	long id;
 	struct metadata_ * prev, * next;
-} metadata;
+	
+}metadata;
+
+typedef struct node_ {
+	
+	int test;
+	char * word;
+	
+}node;
 
 //*****Prototypes*****//
 void * mymalloc(size_t size);
