@@ -1,8 +1,5 @@
 //#define malloc(x) mymalloc(x, __FILE__, __LINE__)
 //#define free(x) myfree(x, __FILE__, __LINE__)
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
 #define MEM_CAP 5000
 #define FINAL_BLOCK_THRESHOLD 40
 

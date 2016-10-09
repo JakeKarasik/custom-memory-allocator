@@ -4,13 +4,10 @@ FLAGS   =       -Wall -g
 
 COMPILE =       $(CC) $(FLAGS)
 
-all: mymalloc memgrind
+all: memgrind
 
-mymalloc:	mymalloc.c mymalloc.h
-	$(COMPILE) mymalloc.c -o mymalloc
-
-memgrind: memgrind.c
-	$(COMPILE) memgrind.c -o memgrind
+memgrind: memgrind.c mymalloc.c mymalloc.h
+	$(COMPILE) mymalloc.c memgrind.c -o memgrind
 
 clean:
-	rm -rf *.o mymalloc memgrind
+	rm -rf *.o memgrind
