@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #define MEM_CAP 5000
+#define FINAL_BLOCK_THRESHOLD 40
 
 
 //****Structs*****//
@@ -15,13 +16,6 @@ typedef struct metadata_{
 	struct metadata_ * prev, * next;
 	
 }metadata;
-
-typedef struct node_ {
-	
-	int test;
-	char * word;
-	
-}node;
 
 //*****Prototypes*****//
 void * mymalloc(size_t size);
