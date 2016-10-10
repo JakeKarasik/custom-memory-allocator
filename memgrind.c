@@ -69,7 +69,7 @@ int main(int argc, char * argv[]) {
 	}
 	myfree(test1);
 	myfree(&i);*/
-
+/*
 	int j;
 	for(j = 0; j < 2000; j++){
 		char * ptr = mymalloc(sizeof(char *));
@@ -81,6 +81,13 @@ int main(int argc, char * argv[]) {
 		if (j % 2 == 0) myfree(ptr);
 		
 		
-	}
+	}*/
+	char * test1 = mymalloc(2460);
+		printf("---\n");
+
+	char * test2 = mymalloc(2477);
+
+	myfree(test1);
+	myfree(test2);
 	return 0;
 }

@@ -1,7 +1,8 @@
 //#define malloc(x) mymalloc(x, __FILE__, __LINE__)
 //#define free(x) myfree(x, __FILE__, __LINE__)
 #define MEM_CAP 5000
-#define FINAL_BLOCK_THRESHOLD 40
+#define FINAL_BLOCK_THRESHOLD 8
+#define UNIQUE_ID 0xdaedbeaf
 
 
 //****Structs*****//
