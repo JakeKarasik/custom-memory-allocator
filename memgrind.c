@@ -1,11 +1,25 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/time.h>
 #include "mymalloc.h"
+
 
 int main(int argc, char * argv[]) {
 	
-/*
+	
+	int a;
+	int malloc_index = 0, free_index = 0;
+	char* work[3000];
+	int mallocs = 0, frees = 0;
+	long averageTime = 0;
+	int x;
+	for(x = 0;x<100;x++) {
+		struct timeval  start, finish;
+		gettimeofday(&start, NULL);
+	
+	
+	/*
 	char * test1 = mymalloc(sizeof(char)*6);
 	test1[5] = '\0';
 	test1[0] = 'a';
@@ -28,66 +42,126 @@ int main(int argc, char * argv[]) {
 	int * int_ptr = mymalloc(sizeof(int));
 	*int_ptr = 25;
 	
-	node * testNode = mymalloc(sizeof(node));
-	testNode->test = 1;
-	//testNode->word = mymalloc(3);
-	//strcpy(testNode->word,"hi");
-	
-
 	printf("%s\n", test1);
 	printf("%s\n", test2);
-	
 	printf("%d\n", *int_ptr);
-	printf("%d\n",testNode->test);//testNode->word);
-
-
-	int i =1;
+	myfree(test1);
+	myfree(test1);
+	myfree(test2);
+	myfree(&i);
+	
+	
+	a = 1;
 	for(; i<300; i++){
 		
 		printf("%d[%c %d %x]\n", i, myblock[i], myblock[i], myblock[i]);
 		
 	}
-	myfree(test1);
-
+	
 	metadata * first = (metadata *)myblock;
-
-	
-	int j =0;
+	a = 0;
 	for(; first != NULL; first=first->next,j++){
 		
 		printf("%d[%c]\n", j,first+1);
 		
 	}
-	myfree(test1);
-
 	
-	j =0;
+	a = 0;
 	for(; first != NULL; first=first->next,j++){
 		
 		printf("%d[%c]\n", j,first+1);
 		
 	}
-	myfree(test1);
-	myfree(&i);*/
-/*
-	int j;
-	for(j = 0; j < 2000; j++){
-		char * ptr = mymalloc(sizeof(char *));
-		if (ptr != NULL) {
-			*ptr = 'a';
-		printf("%d[%c]\n",j,*ptr);
+	
+
+
+
+
+
+	
+	///Spec Test Case 1///
+	
+	for(a = 0; a < 3000; a++){
 		
-		}
-		if (j % 2 == 0) myfree(ptr);
+		char * testa = mymalloc(sizeof(char *));
+		work[a] = testa;
 		
+	}
+	for(; a >=0; a--){
+		
+		myfree(work[a]);
+		
+	}
+	
+	///Spec Test Case 2///
+	
+	for(a = 0; a < 3000; a++){
+		
+		char * testb = mymalloc(sizeof(char *));
+		myfree(testb);
 		
 	}*/
-	char * test1 = mymalloc(2460);
-		printf("---\n");
+	
+	
+	///Spec Test Case 3///
+	/*
+	while (1) {
+		int r = rand() % 2; //r=1=malloc, r=0=free
+		
+		if (mallocs == 3000) {
+			r = 0;
+			if (frees == 3000) {
+				break;
+			}
+		}
+	
+		if (r) {
+			char * testc = mymalloc(sizeof(char *));
+			work[malloc_index] = testc;
+			malloc_index++;
+			mallocs++;
+		} else {
+			myfree(work[free_index]);
+			if (free_index <= malloc_index) {
+				free_index++;
+				frees++;
+			}
+		}
+	}
+	*/
 
-	char * test2 = mymalloc(2477);
+	///Spec Test Case 4///
+	
+	while (1) {
+		int r = rand() % 2; //r=1=malloc, r=0=free
+		int rand_size = (rand() % 60) + 1;
 
-	myfree(test1);
-	myfree(test2);
+		if (mallocs == 3000) {
+			r = 0;
+			if (frees == 3000) {
+				break;
+			}
+		}
+	
+		if (r) {
+			char * testd = mymalloc(rand_size);
+			work[malloc_index] = testd;
+			malloc_index++;
+			mallocs++;
+		} else {
+			myfree(work[free_index]);
+			if (free_index <= malloc_index) {
+				free_index++;
+				frees++;
+			}
+		}
+	}
+	
+	gettimeofday(&finish, NULL);
+	averageTime += (finish.tv_sec - start.tv_sec)*1000000L + finish.tv_usec - start.tv_usec;	
+	
+	}
+	averageTime /= 100;
+	printf("Avg time = %ld\n",averageTime);
 	return 0;
 }

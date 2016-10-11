@@ -26,7 +26,7 @@ void * mymalloc(size_t size){
 
 		if(curr->is_set == 0 && curr->size >= size){ //valid block found and block was initialized
 
-			printf("Saving here, block was initialized\n");
+			//printf("Saving here, block was initialized\n");
 			
 			curr_index += size + sizeof(metadata);
 
@@ -42,12 +42,12 @@ void * mymalloc(size_t size){
 
 			if(remaining_space < size + sizeof(metadata)){
 		
-				printf("Error: Not enough memory left to allocate.\n");
+				//printf("Error: Not enough memory left to allocate.\n");
 				return NULL;
 				
 			} else {
 
-				printf("Saving here, block was never initialized.\n");
+				//printf("Saving here, block was never initialized.\n");
 				//if head not set, mark as set
 				if (curr_index == 0) {
 					curr->prev = NULL;
@@ -57,7 +57,7 @@ void * mymalloc(size_t size){
 
 				//printf("Pointer returned at index %d\n",curr_index-(int)size);
 
-				remaining_space -= sizeof(metadata) + size;
+				remaining_space = remaining_space - sizeof(metadata) - size;
 
 				if (remaining_space >= FINAL_BLOCK_THRESHOLD + sizeof(metadata)) {
 					metadata * next_block = (metadata *)(&myblock[curr_index]);
@@ -87,7 +87,7 @@ void * mymalloc(size_t size){
 		}
 	}
 
-	printf("Error: Not enough continuous memory available.\n");
+	//printf("Error: Not enough continuous memory available.\n");
 	return NULL;
 	
 }
@@ -95,7 +95,7 @@ void * mymalloc(size_t size){
 void myfree(void * ptr){
 
 	if (ptr == NULL) {
-		printf("Error: Attempting to free NULL pointer.\n");
+		//printf("Error: Attempting to free NULL pointer.\n");
 		return;
 	}
 
@@ -105,16 +105,16 @@ void myfree(void * ptr){
 	if (to_free->id == UNIQUE_ID && to_free->is_set == 1) {
 
 		to_free->is_set = 0;
-		printf("Successfully free'd\n");
+		//printf("Successfully free'd\n");
 		//remaining_space += to_free->size + sizeof(metadata);
 
 	} else if (to_free->id == UNIQUE_ID && to_free->is_set == 0) {
 		
-		printf("Error: Pointer was already free'd\n");
+		//printf("Error: Pointer was already free'd\n");
 		
 	} else {
 		
-		printf("Error: Invalid free!\n");
+		//printf("Error: Invalid free!\n");
 		
 	}
 	
