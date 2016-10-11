@@ -1,11 +1,21 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/time.h>
 #include "mymalloc.h"
 
 int main(int argc, char * argv[]) {
 	
-/*
+	struct timeval  start, finish;
+	int a;
+	int index;
+	char* work[3000];
+	int mall = 0;
+	
+	gettimeofday(&start, NULL);
+	
+	
+	/*
 	char * test1 = mymalloc(sizeof(char)*6);
 	test1[5] = '\0';
 	test1[0] = 'a';
@@ -28,59 +38,111 @@ int main(int argc, char * argv[]) {
 	int * int_ptr = mymalloc(sizeof(int));
 	*int_ptr = 25;
 	
-	node * testNode = mymalloc(sizeof(node));
-	testNode->test = 1;
-	//testNode->word = mymalloc(3);
-	//strcpy(testNode->word,"hi");
-	
-
 	printf("%s\n", test1);
 	printf("%s\n", test2);
-	
 	printf("%d\n", *int_ptr);
-	printf("%d\n",testNode->test);//testNode->word);
 
-
-	int i =1;
+	myfree(test1);
+	myfree(test1);
+	myfree(test2);
+	myfree(&i);
+	
+	
+	a = 1;
 	for(; i<300; i++){
 		
 		printf("%d[%c %d %x]\n", i, myblock[i], myblock[i], myblock[i]);
 		
 	}
-	myfree(test1);
+	
 
 	metadata * first = (metadata *)myblock;
-
-	
-	int j =0;
+	a = 0;
 	for(; first != NULL; first=first->next,j++){
 		
 		printf("%d[%c]\n", j,first+1);
 		
 	}
-	myfree(test1);
-
 	
-	j =0;
+	a = 0;
 	for(; first != NULL; first=first->next,j++){
 		
 		printf("%d[%c]\n", j,first+1);
 		
 	}
-	myfree(test1);
-	myfree(&i);*/
-
-	int j;
-	for(j = 0; j < 2000; j++){
-		char * ptr = mymalloc(sizeof(char *));
-		if (ptr != NULL) {
-			*ptr = 'a';
-		printf("%d[%c]\n",j,*ptr);
+	
+	///Spec Test Case 1///
+	
+	for(a = 0; a < 3000; a++){
 		
+		char * testa = mymalloc(1);
+		work[a] = testa;
+		
+	}
+	for(; a >=0; a--){
+		
+		myfree(work[a]);
+		
+	}
+	
+	///Spec Test Case 2///
+	
+	for(a = 0; a < 3000; a++){
+		
+		char* testb = mymalloc(1);
+		myfree(testb);
+		
+	}
+	
+	*/
+	///Spec Test Case 3///
+	
+	index = 10;
+	for(a = 0; a < 6000; a++){
+		
+		
+		int r = rand() % 2;
+		if(mall < 3000){
+			
+			if(r == 0){
+				
+				
+				char* testc = mymalloc(1);
+				work[index] = testc;
+				mall++;
+				index++;
+				
+			}else if(r == 1){
+				
+				if(index <= 0){
+					
+					index = 1;
+					
+				}
+				int R = rand() % index;
+				myfree(work[R]);
+				index--;
+				
+			}
+			
+		}else{
+			
+			a = index;
+			for(; a > 9; a--){
+				
+				free(work[a]);
+				
+			}
+			
 		}
-		if (j % 2 == 0) myfree(ptr);
-		
 		
 	}
+	
+	gettimeofday(&finish, NULL);
+	printf("Time - %ld - microseconds\n",
+			(finish.tv_sec - start.tv_sec)*1000000L
+			+ finish.tv_usec - start.tv_usec
+			);
+			
 	return 0;
 }
