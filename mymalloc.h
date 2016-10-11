@@ -13,7 +13,7 @@ typedef struct metadata_{
 	long id;
 	struct metadata_ * prev, * next;
 	
-}metadata;
+} metadata;
 
 //*****Prototypes*****//
 void * mymalloc(size_t size);
