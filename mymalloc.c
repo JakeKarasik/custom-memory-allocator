@@ -40,7 +40,7 @@ void * mymalloc(size_t size, char * file, int line){
 
 			if(remaining_space < size + sizeof(metadata)){
 		
-				//printf("Error: Not enough memory left to allocate.\n");
+				//printf("[%s, line %d] Error: Not enough memory left to allocate.\n", file, line);
 
 				return NULL;
 				
@@ -85,7 +85,7 @@ void * mymalloc(size_t size, char * file, int line){
 		}
 	}
 
-	//printf("Error: Not enough continuous memory available.\n");
+	//printf("[%s, line %d] Error: Not enough continuous memory available.\n", file, line);
 
 	return NULL;
 	
@@ -95,7 +95,7 @@ void myfree(void * ptr, char * file, int line){
 
 	if (ptr == NULL) {
 
-		//printf("Error: Attempting to free NULL pointer.\n");
+		printf("[%s, line %d] Error: Attempting to free NULL pointer.\n", file, line);
 
 		return;
 	}
@@ -110,11 +110,11 @@ void myfree(void * ptr, char * file, int line){
 
 	} else if (to_free->id == UNIQUE_ID && to_free->is_set == 0) {
 		
-		//printf("Error: Pointer was already free'd\n");
+		printf("[%s, line %d] Error: Pointer was already free'd.\n", file, line);
 		
 	} else {
 		
-		//printf("Error: Invalid free!\n");
+		printf("[%s, line %d] Error: Invalid free.\n", file, line);
 		
 	}
 	

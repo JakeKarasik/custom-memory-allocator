@@ -3,208 +3,180 @@
 #include <sys/time.h>
 #include "mymalloc.h"
 
-void test_case_a() {
+void testCaseA() {
+
 	int a;
 	char * work[3000];	
 
 	for(a = 0; a < 3000; a++){
+
 		char * testa = malloc(1);
 		work[a] = testa;
+
+	}
+	for(; a >=0; a--){
+
+		free(work[a]);
+
 	}
 
-	for(; a >=0; a--){
-		free(work[a]);
-	}
 }
 
-void test_case_b() {
-	int a;
+void testCaseB() {
 
-	for(a = 0; a < 3000; a++){		
+	int b;
+
+	for(b = 0; b < 3000; b++){	
+
 		char * testb = malloc(1);
 		free(testb);
+
 	}
+
 }
 
-void test_case_c() {
+void testCaseC() {
+
 	char * work[3000];
 	int malloc_index = 0, free_index = 0;
 	int mallocs = 0, frees = 0;
 
 	while (1) {
+
 		int r = rand() % 2; //r=1=malloc, r=0=free
 		
 		if (mallocs == 3000) {
+
 			r = 0;
 			if (frees == 3000) {
+
 				break;
 			}
 		}
 	
 		if (r) {
+
 			char * testc = malloc(1);
 			work[malloc_index] = testc;
 			malloc_index++;
 			mallocs++;
+
 		} else {
+
 			free(work[free_index]);
 			if (free_index <= malloc_index) {
+
 				free_index++;
 				frees++;
+
 			}
+
 		}
+
 	}
+
 }
 
-void test_case_d() {
+void testCaseD() {
+
 	char * work[3000];
 	int malloc_index = 0, free_index = 0;
 	int mallocs = 0, frees = 0;
 
 	while (1) {
+
 		int r = rand() % 2; //r=1=malloc, r=0=free
 		int rand_size = (rand() % 60) + 1;
 
 		if (mallocs == 3000) {
+
 			r = 0;
 			if (frees == 3000) {
+
 				break;
+
 			}
+
 		}
 	
 		if (r) {
+
 			char * testd = malloc(rand_size);
 			work[malloc_index] = testd;
 			malloc_index++;
 			mallocs++;
+
 		} else {
+
 			free(work[free_index]);
 			if (free_index <= malloc_index) {
+				
 				free_index++;
 				frees++;
+
 			}
+
 		}
+
+	}
+
+}
+
+void testCaseE() {
+
+	int e;
+
+	for (e=0;e<3000;e++) {
+
+		char * teste = malloc(e);
+		free(teste);
+
+	}
+
+	for (;e>=0;e--) {
+		char * teste = malloc(e);
+		free(teste);
 	}
 }
 
-void test_case_e() {
-	int a;
+void testCaseF() {
 
-	for (a=0;a<3000;a++) {
-		char * teste = malloc(a);
-		free(teste);
-	}
+	int f;
 
-	for (;a>=0;a--) {
-		char * teste = malloc(a);
-		free(teste);
-	}
 }
 
-void test_case_f() {
-	return;
+void getAverageElapsedTime(void (*function_to_call)(), char test_case) {
+	long averageTime = 0;
+	int total_runs = 100;
+	int x = 0;
+	FILE * f = fopen("output.txt", "a");
+	//setvbuf(f,NULL,_IONBF,0);
+	
+	for(;x<total_runs;x++) {
+		struct timeval start, finish;
+		gettimeofday(&start, NULL);
+
+		(*function_to_call)();
+
+		gettimeofday(&finish, NULL);
+		averageTime += (long)(finish.tv_sec - start.tv_sec)*1000000L;
+		averageTime += (long)(finish.tv_usec - start.tv_usec);	
+	}
+
+	averageTime /= total_runs;
+	printf("Avg time for test case %c = %ld microseconds.\n",test_case, averageTime);
+	fprintf(f, "Avg time for test case %c = %ld microseconds.\n",test_case, averageTime);
+	fclose(f);
 }
 
 int main(int argc, char * argv[]) {
 	
-	long averageTime = 0;
-	int total_runs = 100;
-	int x;
-
-	for(x = 0;x<total_runs;x++) {
-
-		struct timeval  start, finish;
-		gettimeofday(&start, NULL);
-	
-		test_case_a();
-
-		gettimeofday(&finish, NULL);
-		averageTime += (finish.tv_sec - start.tv_sec)*1000000L + finish.tv_usec - start.tv_usec;	
-		
-	}
-	averageTime /= total_runs;
-	printf("Avg time test case A = %ld\n",averageTime);
-
-	averageTime = 0;
-
-	for(x = 0;x<total_runs;x++) {
-		
-		struct timeval  start, finish;
-		gettimeofday(&start, NULL);
-	
-		test_case_b();
-
-		gettimeofday(&finish, NULL);
-		averageTime += (finish.tv_sec - start.tv_sec)*1000000L + finish.tv_usec - start.tv_usec;	
-		
-	}
-	averageTime /= total_runs;
-	printf("Avg time test case B = %ld\n",averageTime);
-
-	averageTime = 0;
-
-	for(x = 0;x<total_runs;x++) {
-		
-		struct timeval  start, finish;
-		gettimeofday(&start, NULL);
-	
-		test_case_c();
-
-		gettimeofday(&finish, NULL);
-		averageTime += (finish.tv_sec - start.tv_sec)*1000000L + finish.tv_usec - start.tv_usec;	
-		
-	}
-	averageTime /= total_runs;
-	printf("Avg time test case C = %ld\n",averageTime);
-
-	averageTime = 0;
-
-	for(x = 0;x<total_runs;x++) {
-		
-		struct timeval  start, finish;
-		gettimeofday(&start, NULL);
-	
-		test_case_d();
-
-		gettimeofday(&finish, NULL);
-		averageTime += (finish.tv_sec - start.tv_sec)*1000000L + finish.tv_usec - start.tv_usec;	
-		
-	}
-	averageTime /= total_runs;
-	printf("Avg time test case D = %ld\n",averageTime);
-
-	averageTime = 0;
-
-	for(x = 0;x<total_runs;x++) {
-		
-		struct timeval  start, finish;
-		gettimeofday(&start, NULL);
-	
-		test_case_e();
-
-		gettimeofday(&finish, NULL);
-		averageTime += (finish.tv_sec - start.tv_sec)*1000000L + finish.tv_usec - start.tv_usec;	
-		
-	}
-	averageTime /= total_runs;
-	printf("Avg time test case E = %ld\n",averageTime);
-
-	averageTime = 0;
-
-	for(x = 0;x<total_runs;x++) {
-		
-		struct timeval  start, finish;
-		gettimeofday(&start, NULL);
-	
-		test_case_f();
-
-		gettimeofday(&finish, NULL);
-		averageTime += (finish.tv_sec - start.tv_sec)*1000000L + finish.tv_usec - start.tv_usec;	
-		
-	}
-	averageTime /= total_runs;
-	printf("Avg time test case F = %ld\n",averageTime);
-
+	getAverageElapsedTime(&testCaseA, 'A');
+	getAverageElapsedTime(&testCaseB, 'B');
+	getAverageElapsedTime(&testCaseC, 'C');
+	getAverageElapsedTime(&testCaseD, 'D');
+	getAverageElapsedTime(&testCaseE, 'E');
+	getAverageElapsedTime(&testCaseF, 'F');
 
 	return 0;
 }
