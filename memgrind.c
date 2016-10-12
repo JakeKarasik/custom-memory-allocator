@@ -150,7 +150,6 @@ void getAverageElapsedTime(void (*function_to_call)(), char test_case) {
 	int total_runs = 100;
 	int x = 0;
 	FILE * f = fopen("output.txt", "a");
-	//setvbuf(f,NULL,_IONBF,0);
 	
 	for(;x<total_runs;x++) {
 		struct timeval start, finish;
