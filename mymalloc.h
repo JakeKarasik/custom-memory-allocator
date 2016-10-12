@@ -18,4 +18,4 @@ typedef struct metadata_{
 //*****Prototypes*****//
 void * mymalloc(size_t size, char * file, int line);
 void myfree(void * ptr, char * file, int line);
-char * getMyBlock();
+void resetmyblock();

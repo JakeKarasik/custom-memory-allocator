@@ -1,7 +1,11 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <sys/time.h>
+#include <ctype.h>
 #include "mymalloc.h"
+
+long average_times[6];
 
 void testCaseA() {
 
@@ -142,14 +146,32 @@ void testCaseE() {
 void testCaseF() {
 
 	int f;
+	char * work[3000];
+	char * str[] = {"hello", "hi", "goodbye"};
 
+	for(f = 0; f < 3000; f++){
+			
+			int r = rand() % 3;
+			char * segment = malloc(strlen(str[r])+1);
+
+			if (segment != NULL) { 
+				strcpy(segment, str[r]);
+			}
+			work[f] = segment;
+
+	}
+	
+	for(f = 0; f < 3000; f++){
+
+		free(work[f]);
+ 
+	}
 }
 
-void getAverageElapsedTime(void (*function_to_call)(), char test_case) {
+void setAverageElapsedTime(void (*function_to_call)(), char test_case) {
 	long averageTime = 0;
 	int total_runs = 100;
 	int x = 0;
-	FILE * f = fopen("output.txt", "a");
 	
 	for(;x<total_runs;x++) {
 		struct timeval start, finish;
@@ -158,68 +180,33 @@ void getAverageElapsedTime(void (*function_to_call)(), char test_case) {
 		(*function_to_call)();
 
 		gettimeofday(&finish, NULL);
+
 		averageTime += (long)(finish.tv_sec - start.tv_sec)*1000000L;
 		averageTime += (long)(finish.tv_usec - start.tv_usec);	
+
+		resetmyblock();
 	}
 
 	averageTime /= total_runs;
-	printf("Avg time for test case %c = %ld microseconds.\n",test_case, averageTime);
-	fprintf(f, "Avg time for test case %c = %ld microseconds.\n",test_case, averageTime);
-	fclose(f);
+	average_times[test_case-97] = averageTime;
+}
+
+void printAverageElapsedTimes() {
+	int i=0;
+	for (;i<6;i++) {
+		printf("Test Case %c Avg Time = %ld microseconds.\n", toupper(97+i), average_times[i]);
+	}
 }
 
 int main(int argc, char * argv[]) {
 	
-	getAverageElapsedTime(&testCaseA, 'A');
-	getAverageElapsedTime(&testCaseB, 'B');
-	getAverageElapsedTime(&testCaseC, 'C');
-	getAverageElapsedTime(&testCaseD, 'D');
-	getAverageElapsedTime(&testCaseE, 'E');
-	getAverageElapsedTime(&testCaseF, 'F');
+	setAverageElapsedTime(&testCaseA, 'a');
+	setAverageElapsedTime(&testCaseB, 'b');
+	setAverageElapsedTime(&testCaseC, 'c');
+	setAverageElapsedTime(&testCaseD, 'd');
+	setAverageElapsedTime(&testCaseE, 'e');
+	setAverageElapsedTime(&testCaseF, 'f');
+	printAverageElapsedTimes();
 
 	return 0;
 }
-
-
-/*
-		char * test1 = malloc(6);
-		if (test1 != NULL) {
-			test1[5] = '\0';
-			test1[0] = 'a';
-			test1[1] = 'b';
-			test1[2] = 'c';
-			test1[3] = 'd';
-			test1[4] = 'e';
-		}
-		
-		char * test2 = malloc(7);
-		if (test2 != NULL) {
-			test2[6] = '\0';
-			test2[0] = 'f';
-			test2[1] = 'g';
-			test2[2] = 'h';
-			test2[3] = 'i';
-			test2[4] = 'j';
-			test2[5] = 'k';
-		}
-		
-		int * int_ptr = malloc(sizeof(int));
-		if (int_ptr != NULL) {
-			*int_ptr = 25;
-		}
-		
-		printf("%s\n", (test1 != NULL) ? test1 : "");
-		printf("%s\n", (test2 != NULL) ? test2 : "");
-		printf("%d\n", (int_ptr != NULL) ? *int_ptr : -1);
-		//free(test1);
-		//free(test1);
-		//free(test2);
-		free(&x);
-		
-		char * myblock = getMyBlock();
-		a = 0;
-		for(; a<300; a++){
-			
-			printf("%d[%c %d %x]\n", a, myblock[a], myblock[a], myblock[a]);
-			
-		}*/
