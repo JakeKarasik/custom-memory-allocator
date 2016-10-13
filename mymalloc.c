@@ -2,6 +2,7 @@
 //Nicholas Petriello
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "mymalloc.h"
 
 //****Global Vars****//
@@ -9,8 +10,11 @@ static char myblock[MEM_CAP]; //Storage memory
 int remaining_space = MEM_CAP; //Bytes left to allocate
 
 //*****Functions*****//
-char * getMyBlock() {
-	return myblock;
+void resetmyblock() {
+	
+	memset(myblock, 0, MEM_CAP);
+	remaining_space = MEM_CAP;
+	
 }
 
 void * mymalloc(size_t size, char * file, int line){	

@@ -1,1 +1,19 @@
-test
+testCaseE();
+It mallocs char pointers of increasing size starting 
+from size 0 going to size 3000 and frees them 
+immediately afterward. Then it goes back through 
+doing the same thing but in reverse order 
+(starts at size 3000 and goes down to size 0);
+
+This testcase shows how memory can be 
+malloc'd->free'd->malloc'd->free'd with our 
+implementation.
+
+testCaseF();
+It mallocs char pointers for random words of 
+different sizes and stores them for up to 3000 times. 
+Then it goes through and frees all the pointers.
+
+This testcase shows how our implementation actually 
+works like malloc as in values can be stored with 
+malloc'd pointers.
