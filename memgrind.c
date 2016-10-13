@@ -5,9 +5,9 @@
 #include <ctype.h>
 #include "mymalloc.h"
 
-long average_times[6];
+long average_times[6];//stores the test times for each workload
 
-void testCaseA() {
+void testCaseA() {//workload as per the specs
 
 	int a;
 	char * work[3000];	
@@ -26,7 +26,7 @@ void testCaseA() {
 
 }
 
-void testCaseB() {
+void testCaseB() {//workload as per the specs
 
 	int b;
 
@@ -39,7 +39,7 @@ void testCaseB() {
 
 }
 
-void testCaseC() {
+void testCaseC() {//workload as per the specs
 
 	char * work[3000];
 	int malloc_index = 0, free_index = 0;
@@ -81,7 +81,7 @@ void testCaseC() {
 
 }
 
-void testCaseD() {
+void testCaseD(){//workload as per the specs
 
 	char * work[3000];
 	int malloc_index = 0, free_index = 0;
@@ -126,7 +126,13 @@ void testCaseD() {
 
 }
 
-void testCaseE() {
+void testCaseE() {//custom workload
+
+/*
+
+This workload allocates arithmetically increasing sizes to memory and then frees them.
+
+*/
 
 	int e;
 
@@ -144,8 +150,14 @@ void testCaseE() {
 	
 }
 
-void testCaseF() {
+void testCaseF() {//custom workload
 
+/*
+
+Selects a random word and allocates space for their copies in memory.
+It then frees them.
+
+*/
 	int f;
 	char * work[3000];
 	char * str[] = {"hello", "hi", "goodbye"};
@@ -170,7 +182,7 @@ void testCaseF() {
 	
 }
 
-void setAverageElapsedTime(void (*function_to_call)(), char test_case) {
+void setAverageElapsedTime(void (*function_to_call)(), char test_case) {//averages of workload times
 	
 	long averageTime = 0;
 	int total_runs = 100;
@@ -197,7 +209,7 @@ void setAverageElapsedTime(void (*function_to_call)(), char test_case) {
 	
 }
 
-void printAverageElapsedTimes() {
+void printAverageElapsedTimes() {//prints average_times
 	
 	int i=0;
 	

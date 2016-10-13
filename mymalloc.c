@@ -10,30 +10,30 @@ static char myblock[MEM_CAP]; //Storage memory
 int remaining_space = MEM_CAP; //Bytes left to allocate
 
 //*****Functions*****//
-void resetmyblock() {
+void resetmyblock() {//this resets the block so that it can be allocated a workload
 	
 	memset(myblock, 0, MEM_CAP);
 	remaining_space = MEM_CAP;
 	
 }
 
-void * mymalloc(size_t size, char * file, int line){	
+void * mymalloc(size_t size, char * file, int line){//custom malloc
 	
-	if (size == 0) {
+	if (size == 0) {//allocation of size 0 returns a null ptr
 
 		return NULL;
 
 	}
 
-	int curr_index = 0;
-	metadata * curr = (metadata *)myblock;
+	int curr_index = 0;//keeps track of the part of memory that is currently being used
 	
-	while(curr != NULL){
+	metadata * curr = (metadata *)myblock;//this is the ptr metadata node that is used to traverse the list
+	
+	while(curr != NULL){//this loops through the list of nodes of metadata
 
 		if(curr->is_set == 0 && curr->size >= size){ //valid block found and block was initialized
 			
 			curr_index += size + sizeof(metadata);
-
 			curr->is_set = 1;
 
 			//printf("Pointer successfully malloc'd.\n");
@@ -42,13 +42,13 @@ void * mymalloc(size_t size, char * file, int line){
 
 		} else if (curr->is_set == 0 && curr->size == 0) { //valid block found and block was never initialized
 
-			if(remaining_space < size + sizeof(metadata)){
+			if(remaining_space < size + sizeof(metadata)){//executes when there is no more space left to allocate
 		
 				//printf("[%s, line %d] Error: Not enough memory left to allocate.\n", file, line);
 
 				return NULL;
 				
-			} else {
+			} else {//sets up a new metadata node in the linked list
 
 				curr_index += size + sizeof(metadata);
 
@@ -61,10 +61,9 @@ void * mymalloc(size_t size, char * file, int line){
 					next_block->size = 0;
 					next_block->id = UNIQUE_ID;
 					next_block->next = NULL;
-
 					curr->next = next_block;
 
-				} else {
+				} else {//goes to the next metadata node
 
 					curr->next = NULL;
 
@@ -95,18 +94,18 @@ void * mymalloc(size_t size, char * file, int line){
 	
 }
 
-void myfree(void * ptr, char * file, int line){
+void myfree(void * ptr, char * file, int line){//custom free
 
-	if (ptr == NULL) {
+	if (ptr == NULL) {//returns error for invalid memory addresses
 
 		printf("[%s, line %d] Error: Attempting to free NULL pointer.\n", file, line);
 
 		return;
 	}
 
-	metadata * to_free = (metadata * )(ptr - sizeof(metadata));
+	metadata * to_free = (metadata * )(ptr - sizeof(metadata));//ptr to traverse link list
 
-	if (to_free->id == UNIQUE_ID && to_free->is_set == 1) {
+	if (to_free->id == UNIQUE_ID && to_free->is_set == 1) {//just sets the metadata is_set to free or not free
 
 		to_free->is_set = 0;
 		
