@@ -15,7 +15,12 @@ void resetmyblock() {
 	remaining_space = MEM_CAP;
 }
 
-void * mymalloc(size_t size, char * file, int line){	
+void * mymalloc(size_t size, char * file, int line){
+
+	if (size < 0 || size > MEM_CAP) {
+		printf("Error: Invalid size memory request.\n");
+		return NULL;
+	}	
 	
 	if (size == 0) {
 
