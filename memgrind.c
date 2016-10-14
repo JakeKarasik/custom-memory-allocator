@@ -187,8 +187,8 @@ void setAverageElapsedTime(void (*function_to_call)(), char test_case) {
 		averageTime += (long)(finish.tv_sec - start.tv_sec)*1000000L;
 		averageTime += (long)(finish.tv_usec - start.tv_usec);	
 
-		successMallocs = getSuccessfullMallocs();
-		successFrees = getSuccessfullMallocs();
+		successMallocs = getSuccessfulMallocs();
+		successFrees = getSuccessfulMallocs();
 		resetmyblock();
 	}
 
@@ -206,17 +206,17 @@ void printAverageElapsedTimes() {
 	}
 }
 
-void printSuccessfullMallocs() {
+void printSuccessfulMallocs() {
 	int i=0;
 	for (;i<6;i++) {
-		printf("Test Case %c successfull mallocs = %d.\n", toupper(97+i), success_mallocs[i]);
+		printf("Test Case %c successful mallocs = %d.\n", toupper(97+i), success_mallocs[i]);
 	}
 }
 
-void printSuccessfullFrees() {
+void printSuccessfulFrees() {
 	int i=0;
 	for (;i<6;i++) {
-		printf("Test Case %c successfull frees = %d.\n", toupper(97+i), success_frees[i]);
+		printf("Test Case %c successful frees = %d.\n", toupper(97+i), success_frees[i]);
 	}
 }
 
@@ -231,9 +231,9 @@ int main(int argc, char * argv[]) {
 	printf("\n");
 	printAverageElapsedTimes();
 	printf("\n");
-	printSuccessfullMallocs();
+	printSuccessfulMallocs();
 	printf("\n");
-	printSuccessfullFrees();
+	printSuccessfulFrees();
 
 	return 0;
 }

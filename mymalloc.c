@@ -8,25 +8,50 @@
 //****Global Vars****//
 static char myblock[MEM_CAP]; //Storage memory
 int remaining_space = MEM_CAP; //Bytes left to allocate
-int successfull_mallocs = 0;
-int successfull_frees = 0;
+int successful_mallocs = 0;
+int successful_frees = 0;
 
 //*****Functions*****//
+
+/****
+resetmyblock()
+	Sets the memory back to its original empty space 
+	so that we may run the tests without overlapping 
+	of workloads affecting program times.
+****/
 void resetmyblock() {
 	memset(myblock, 0, MEM_CAP);
 	remaining_space = MEM_CAP;
-	successfull_mallocs = 0;
-	successfull_frees = 0;
+	successful_mallocs = 0;
+	successful_frees = 0;
 }
 
-int getSuccessfullMallocs() {
-	return successfull_mallocs;
+/****
+getSuccessfulMallocs()
+	Returns value of global variable that tracks successful mallocs.
+****/
+int getSuccessfulMallocs() {
+	return successful_mallocs;
 }
 
-int getSuccessfullFrees() {
-	return successfull_frees;
+/****
+getSuccessfulFrees()
+	Returns value of global variable that tracks successful frees.
+****/
+int getSuccessfulFrees() {
+	return successful_frees;
 }
 
+/****
+mymalloc()
+	Takes in a size and returns a pointer to allocated 
+	memory space. If the size is zero, less than 0 or too 
+	large, a null pointer is returned. It creates a 
+	metadata pointer that traverses a linked list delineating 
+	memory blocks and finds an available block. If a list 
+	doesn’t exist, a head is made and starts it. It also 
+	sets the properties for each metadata struct in the list. 
+****/
 void * mymalloc(size_t size, char * file, int line){
 
 	if (size < 0 || size > MEM_CAP) {
@@ -51,7 +76,7 @@ void * mymalloc(size_t size, char * file, int line){
 
 			curr->is_set = 1;
 
-			successfull_mallocs++;
+			successful_mallocs++;
 
 			return &myblock[curr_index-size];
 
@@ -89,7 +114,7 @@ void * mymalloc(size_t size, char * file, int line){
 				curr->size = size;
 				curr->id = UNIQUE_ID;
 
-				successfull_mallocs++;
+				successful_mallocs++;
 
 				return &myblock[curr_index-size];
 
@@ -108,6 +133,15 @@ void * mymalloc(size_t size, char * file, int line){
 	
 }
 
+/****
+myfree()
+	Sets the is_set property in the metadata for the 
+	passed in pointer so that it is deemed available 
+	space by mymalloc. If a null value or already free 
+	pointer is given, then an error is printed. This 
+	function checks if the unique id defined in mymalloc.h
+	is set to ensure the passed in pointer is valid.
+****/
 void myfree(void * ptr, char * file, int line){
 
 	if (ptr == NULL) {
@@ -123,7 +157,7 @@ void myfree(void * ptr, char * file, int line){
 
 		to_free->is_set = 0;
 		
-		successfull_frees++;
+		successful_frees++;
 
 	} else if (to_free->id == UNIQUE_ID && to_free->is_set == 0) {
 		
