@@ -5,13 +5,13 @@
 #include <string.h>
 #include "mymalloc.h"
 
-//****Global Vars****//
+//_____Global Vars_____//
 static char myblock[MEM_CAP]; //Storage memory
 int remaining_space = MEM_CAP; //Bytes left to allocate
-int successful_mallocs = 0;
-int successful_frees = 0;
+int successful_mallocs = 0; //Tracks succesful mallocs
+int successful_frees = 0; //Tracks succesful frees
 
-//*****Functions*****//
+//_____Functions_____//
 
 /****
 resetmyblock()
@@ -54,46 +54,52 @@ mymalloc()
 ****/
 void * mymalloc(size_t size, char * file, int line){
 
+	//Invalid size returns error message and null
 	if (size < 0 || size > MEM_CAP) {
 		printf("Error: Invalid size memory request.\n");
 		return NULL;
 	}	
 	
+	//Allocation of size 0 returns null
 	if (size == 0) {
 
 		return NULL;
 
 	}
 
-	int curr_index = 0;
-	metadata * curr = (metadata *)myblock;
+	int curr_index = 0; //Set index to start of array
+	metadata * curr = (metadata *)myblock; //Cast first chuck of memory as metadata struct
 	
+	//Loop through block of memory like linked list
 	while(curr != NULL){
 
-		if(curr->is_set == 0 && curr->size >= size){ //valid block found and block was initialized
+		//Valid block found and block was initialized
+		if(curr->is_set == 0 && curr->size >= size){ 
 			
-			curr_index += size + sizeof(metadata);
+			curr_index += size + sizeof(metadata); //Adjust index in prep to return memory
 
-			curr->is_set = 1;
+			curr->is_set = 1; //About to return memory, so mark as set
 
-			successful_mallocs++;
+			successful_mallocs++; //Store for later access
 
 			return &myblock[curr_index-size];
 
-		} else if (curr->is_set == 0 && curr->size == 0) { //valid block found and block was never initialized
+		//Valid block found and block was never initialized
+		} else if (curr->is_set == 0 && curr->size == 0) { 
 
+			//Not enough memory left to allocate
 			if(remaining_space < size + sizeof(metadata)){
-		
-				//printf("[%s, line %d] Error: Not enough memory left to allocate.\n", file, line);
 
 				return NULL;
-				
+			
+			//Enough memory, prepare to allocate
 			} else {
 
-				curr_index += size + sizeof(metadata);
+				curr_index += size + sizeof(metadata); //Adjust index in prep to return memory
 
-				remaining_space = remaining_space - sizeof(metadata) - size;
+				remaining_space = remaining_space - sizeof(metadata) - size; //Adjust remaining space for future mallocs
 
+				//Create/initialize next metadata struct if enough space otherwise mark next as null
 				if (remaining_space >= FINAL_BLOCK_THRESHOLD + sizeof(metadata)) {
 
 					metadata * next_block = (metadata *)(&myblock[curr_index]);
@@ -110,27 +116,26 @@ void * mymalloc(size_t size, char * file, int line){
 
 				}
 
-				curr->is_set = 1;
-				curr->size = size;
-				curr->id = UNIQUE_ID;
+				curr->is_set = 1; //About to return memory, so mark as set
+				curr->size = size; //Set size of block
+				curr->id = UNIQUE_ID; //Set unique id from mymalloc.h
 
-				successful_mallocs++;
+				successful_mallocs++; //Store for later access
 
 				return &myblock[curr_index-size];
 
 			}
 		} else {
-
+			//Move to next struct in memory block
 			curr_index += sizeof(metadata) + curr->size;
 			curr = curr->next;
 
 		}
 	}
 
-	//printf("[%s, line %d] Error: Not enough continuous memory available.\n", file, line);
-
+	//Not enough continuous memory available
 	return NULL;
-	
+
 }
 
 /****
@@ -144,6 +149,7 @@ myfree()
 ****/
 void myfree(void * ptr, char * file, int line){
 
+	//Pointer is null
 	if (ptr == NULL) {
 
 		printf("[%s, line %d] Error: Attempting to free NULL pointer.\n", file, line);
@@ -151,18 +157,21 @@ void myfree(void * ptr, char * file, int line){
 		return;
 	}
 
-	metadata * to_free = (metadata * )(ptr - sizeof(metadata));
+	metadata * to_free = (metadata * )(ptr - sizeof(metadata)); //Select metadata struct
 
+	//Valid free
 	if (to_free->id == UNIQUE_ID && to_free->is_set == 1) {
 
-		to_free->is_set = 0;
+		to_free->is_set = 0; //Mark as free
 		
-		successful_frees++;
+		successful_frees++; //Store for later access
 
+	//Pointer already free'd
 	} else if (to_free->id == UNIQUE_ID && to_free->is_set == 0) {
 		
 		printf("[%s, line %d] Error: Pointer was already free'd.\n", file, line);
 		
+	//Invalid free
 	} else {
 		
 		printf("[%s, line %d] Error: Invalid free.\n", file, line);

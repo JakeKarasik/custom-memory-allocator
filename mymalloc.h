@@ -5,7 +5,7 @@
 #define UNIQUE_ID 0xdaedbeaf
 
 
-//****Structs*****//
+//____Structs____//
 typedef struct metadata_{
 	
 	int is_set;
@@ -15,7 +15,7 @@ typedef struct metadata_{
 	
 } metadata;
 
-//*****Prototypes*****//
+//____Prototypes____//
 void * mymalloc(size_t size, char * file, int line);
 void myfree(void * ptr, char * file, int line);
 void resetmyblock();

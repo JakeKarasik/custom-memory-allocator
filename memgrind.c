@@ -170,6 +170,8 @@ void testCaseF() {
 	}
 }
 
+//Runs given test case 100 times and saves average elapsed time in addition
+//to number of succesful mallocs and frees
 void setAverageElapsedTime(void (*function_to_call)(), char test_case) {
 	long averageTime = 0;
 	int total_runs = 100;
@@ -199,6 +201,7 @@ void setAverageElapsedTime(void (*function_to_call)(), char test_case) {
 	average_times[test_case-97] = averageTime;
 }
 
+//Prints average time elapsed for each test case
 void printAverageElapsedTimes() {
 	int i=0;
 	for (;i<6;i++) {
@@ -206,6 +209,7 @@ void printAverageElapsedTimes() {
 	}
 }
 
+//Prints number of successful mallocs for each test case
 void printSuccessfulMallocs() {
 	int i=0;
 	for (;i<6;i++) {
@@ -213,6 +217,7 @@ void printSuccessfulMallocs() {
 	}
 }
 
+//Prints number of successful frees for each test case
 void printSuccessfulFrees() {
 	int i=0;
 	for (;i<6;i++) {
