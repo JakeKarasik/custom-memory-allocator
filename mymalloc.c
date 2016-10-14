@@ -8,11 +8,23 @@
 //****Global Vars****//
 static char myblock[MEM_CAP]; //Storage memory
 int remaining_space = MEM_CAP; //Bytes left to allocate
+int successfull_mallocs = 0;
+int successfull_frees = 0;
 
 //*****Functions*****//
 void resetmyblock() {
 	memset(myblock, 0, MEM_CAP);
 	remaining_space = MEM_CAP;
+	successfull_mallocs = 0;
+	successfull_frees = 0;
+}
+
+int getSuccessfullMallocs() {
+	return successfull_mallocs;
+}
+
+int getSuccessfullFrees() {
+	return successfull_frees;
 }
 
 void * mymalloc(size_t size, char * file, int line){
@@ -39,7 +51,7 @@ void * mymalloc(size_t size, char * file, int line){
 
 			curr->is_set = 1;
 
-			//printf("Pointer successfully malloc'd.\n");
+			successfull_mallocs++;
 
 			return &myblock[curr_index-size];
 
@@ -77,14 +89,12 @@ void * mymalloc(size_t size, char * file, int line){
 				curr->size = size;
 				curr->id = UNIQUE_ID;
 
-				//printf("Pointer successfully malloc'd.\n");
+				successfull_mallocs++;
 
 				return &myblock[curr_index-size];
 
 			}
 		} else {
-
-			//printf("Not saving here... moving to next block.\n");
 
 			curr_index += sizeof(metadata) + curr->size;
 			curr = curr->next;
@@ -113,7 +123,7 @@ void myfree(void * ptr, char * file, int line){
 
 		to_free->is_set = 0;
 		
-		//printf("Successfully free'd\n");
+		successfull_frees++;
 
 	} else if (to_free->id == UNIQUE_ID && to_free->is_set == 0) {
 		

@@ -19,3 +19,5 @@ typedef struct metadata_{
 void * mymalloc(size_t size, char * file, int line);
 void myfree(void * ptr, char * file, int line);
 void resetmyblock();
+int getSuccessfullMallocs();
+int getSuccessfullFrees();

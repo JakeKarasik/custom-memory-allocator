@@ -6,6 +6,8 @@
 #include "mymalloc.h"
 
 long average_times[6];
+int success_mallocs[6];
+int success_frees[6];
 
 void testCaseA() {
 
@@ -172,6 +174,7 @@ void setAverageElapsedTime(void (*function_to_call)(), char test_case) {
 	long averageTime = 0;
 	int total_runs = 100;
 	int x = 0;
+	int successMallocs, successFrees;
 	
 	for(;x<total_runs;x++) {
 		struct timeval start, finish;
@@ -184,8 +187,13 @@ void setAverageElapsedTime(void (*function_to_call)(), char test_case) {
 		averageTime += (long)(finish.tv_sec - start.tv_sec)*1000000L;
 		averageTime += (long)(finish.tv_usec - start.tv_usec);	
 
+		successMallocs = getSuccessfullMallocs();
+		successFrees = getSuccessfullMallocs();
 		resetmyblock();
 	}
+
+	success_mallocs[test_case-97] = successMallocs;
+	success_frees[test_case-97] = successFrees;
 
 	averageTime /= total_runs;
 	average_times[test_case-97] = averageTime;
@@ -198,6 +206,20 @@ void printAverageElapsedTimes() {
 	}
 }
 
+void printSuccessfullMallocs() {
+	int i=0;
+	for (;i<6;i++) {
+		printf("Test Case %c successfull mallocs = %d.\n", toupper(97+i), success_mallocs[i]);
+	}
+}
+
+void printSuccessfullFrees() {
+	int i=0;
+	for (;i<6;i++) {
+		printf("Test Case %c successfull frees = %d.\n", toupper(97+i), success_frees[i]);
+	}
+}
+
 int main(int argc, char * argv[]) {
 	
 	setAverageElapsedTime(&testCaseA, 'a');
@@ -206,7 +228,12 @@ int main(int argc, char * argv[]) {
 	setAverageElapsedTime(&testCaseD, 'd');
 	setAverageElapsedTime(&testCaseE, 'e');
 	setAverageElapsedTime(&testCaseF, 'f');
+	printf("\n");
 	printAverageElapsedTimes();
+	printf("\n");
+	printSuccessfullMallocs();
+	printf("\n");
+	printSuccessfullFrees();
 
 	return 0;
 }
